@@ -1,6 +1,3 @@
 {
-    "apply": {
-        "port": 5779,
-        "path": "services/apply.json"
-    }
+    "example": 3191
 }
