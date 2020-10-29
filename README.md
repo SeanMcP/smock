@@ -10,9 +10,9 @@ Read more about [the value of mocking APIs here](https://www.freecodecamp.org/ne
 
 ## How
 
-`smock` sets up an endpoint on a given port that returns data from a `db.json` file. This provides a front-end engineer a real endpoing to hit while working on a service that is still in development.
+`smock` sets up an endpoint on a given port that returns data from a "database" key in a `JSON` file. This provides a front-end engineer a real endpoint to hit while working on a service that is still in development.
 
-Under the hood, `smock` is a thin wrapper [on top of `json-server`](https://github.com/typicode/json-server). Refer to their documentation for most questions.
+Under the hood, `smock` is a thin wrapper [on top of `json-server`](https://github.com/typicode/json-server). Refer to its documentation for most questions.
 
 ## Getting started
 
@@ -26,8 +26,6 @@ npm run mock name_of_service
 
 ## Adding services
 
-1. In `services/`, add a subdirectory for your service
-1. In the service subdirectory, add
-    1. a `db.json`
-    2. **Optional**: a `routes.json`
-1. Map the service name to its port in `smock-config.json`
+1. In `services/`, add a `JSON` file for the service, _e.g._ `posts.json`
+2. Add an object with three properties: "port", "database", and "routes" (optional)
+3. Start the service with `npm run mock posts`

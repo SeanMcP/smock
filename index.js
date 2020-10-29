@@ -1,26 +1,35 @@
-const fs = require('fs')
-const jsonServer = require('json-server')
+const fs = require("fs");
+const jsonServer = require("json-server");
 
-function exitLog(message) {
-    console.log(message)
-    process.exit(1)
+function exitLog(...message) {
+  console.log(...message);
+  process.exit(1);
 }
 
-const service = process.argv[2]
-if (!service) exitLog('No service provided')
+const service = process.argv[2];
+if (!service) exitLog("No service provided");
 
-const config = JSON.parse(fs.readFileSync('smock-config.json'))
-if (!config[service]) exitLog('No config for service', service)
-const port = config[service]
+const configPath = `services/${service}.json`;
 
-const server = jsonServer.create()
+if (!fs.existsSync(configPath))
+  exitLog(`No config file found for service \`${service}\``);
 
-const routesPath = `services/${service}/routes.json`
+const config = JSON.parse(fs.readFileSync(configPath));
 
-if (fs.existsSync(routesPath))
-    server.use(jsonServer.rewriter(JSON.parse(fs.readFileSync(routesPath))))
+const { database, port, routes = {} } = config;
 
-server.use(jsonServer.router(`services/${service}/db.json`))
+if (!database || !port) {
+  const missing = [];
+  !database && missing.push('"database"');
+  !port && missing.push('"port"');
+  exitLog("Missing required config fields:", ...missing);
+}
+
+const server = jsonServer.create();
+
+server.use(jsonServer.rewriter(routes));
+
+server.use(jsonServer.router(database));
 server.listen(port, () => {
-    console.log(`Mock \`${service}\` is listening on port: ${port}`)
-})
+  console.log(`Mock \`${service}\` is listening on port: ${port}`);
+});
