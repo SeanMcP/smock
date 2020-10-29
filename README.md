@@ -28,4 +28,5 @@ npm run mock name_of_service
 
 1. In `services/`, add a `JSON` file for the service, _e.g._ `posts.json`
 2. Add an object with three properties: "port", "database", and "routes" (optional)
+   - Refer to `services/example.json` for formatting
 3. Start the service with `npm run mock posts`
